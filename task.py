@@ -1,11 +1,11 @@
 import logging
 
 def func_name(function):
-    def wrapper(*args, **kwargs):
+    def get_name(*args, **kwargs):
         method_name = function.__name__
         logging.info(f"Using function: {method_name}")
         return function(*args, **kwargs)
-    return wrapper
+    return get_name
 
 class Client:
     start_balance = 0
@@ -31,11 +31,11 @@ class Client:
             logging.error("Invalid withdrawal amount or insufficient balance.")
 
     @func_name
-    def transfer(self, recipient, amount):
-        if amount > 0 and self balance >= amount:
+    def transfer(self, receiver, amount):
+        if amount > 0 and self.balance >= amount:
             self.balance -= amount
-            recipient.balance += amount
-            logging.info(f"Transferred ${amount} from {self.name} to {recipient.name}.")
+            receiver.balance += amount
+            logging.info(f"Transferred ${amount} from {self.name} to {receiver.name}.")
         else:
             logging.error("Invalid transfer amount or insufficient balance")
 
@@ -90,17 +90,17 @@ class Bank:
         return total
 
     def show_data(self):
-        bank_data = self.bank_data()
-        list_of_clients = self.get_all_clients()
-        logging.info("Bank Details: " + str(bank_data))
-        logging.info("All Clients: " + str(list_of_clients))
+        bank_data = str(self.bank_data())
+        list_of_clients = str(self.get_all_clients())
+        logging.info(f"Bank Details: {bank_data}")
+        logging.info(f"All Clients: {list_of_clients} ")
 
     @func_name
     def save_clients(self, filename):
         with open(filename, "w") as file:
             for client in self.clients:
                 file.write(f"{client.name},{client.balance}\n")
-            logging.info("Saved clients' data to " + filename)
+            logging.info(f"Saved clients' data to {filename}")
 
     def load_clients(self, filename):
         clients = []
@@ -110,7 +110,7 @@ class Bank:
                 client = Client(name, float(balance))
                 clients.append(client)
         self.clients = clients
-        logging.info("Loaded clients' data from " + filename)
+        logging.info(f"Loaded clients' data from {filename}")
 
 logging.basicConfig(filename='banking_log.txt', level=logging.INFO)
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     bank1.create_client("Scorpion", 1000)
     bank1.create_client("Sub-Zero", 500)
     bank1.create_client("Raiden", 1500)
-    #bank2.load_clients("bank2_clients.txt")
+    # bank2.load_clients("bank2_clients.txt")
     bank2.create_client("Kitana", 2000)
     bank2.create_client("Mileena", 700)
 

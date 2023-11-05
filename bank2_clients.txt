@@ -1,0 +1,2 @@
+Kitana,2000
+Mileena,700
